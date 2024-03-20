@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
+
 
 @Service
 public class UserService {
@@ -46,5 +45,15 @@ public class UserService {
         }
 
         return sb.toString();
+    }
+    public boolean verifyPassword(String username, String password) throws NoSuchAlgorithmException {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            return false;
+        }
+
+        String hash = hashPassword(password);
+
+        return hash.equals(user.getHash());
     }
 }
